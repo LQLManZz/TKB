@@ -93,6 +93,34 @@ private:
     int x, y;
 };
 
+class testConstructorDestructor
+{
+private:
+    int a, b;
+    char c[100];
+
+public:
+    testConstructorDestructor(int a, int b)
+    {
+        this->a = a;
+        this->b = b;
+    }
+    ~testConstructorDestructor() {};
+    friend istream &operator>>(istream &in, testConstructorDestructor &a)
+    {
+        cout << "\nNhap xau c: ";
+        in.ignore();
+        in.getline(a.c, 100);
+        return in;
+    }
+    friend ostream &operator<<(ostream &out, testConstructorDestructor &b)
+    {
+        out << "Tich 2 so nguyen a*b = " << b.a * b.b;
+        out << "\nXau ban vua nhap: " << b.c;
+        return out;
+    }
+};
+
 int main()
 {
     // tinh s1;
@@ -101,5 +129,8 @@ int main()
     BT test1;
     cin >> test1;
     cout << test1;
+    testConstructorDestructor q1(3, 5);
+    cin >> q1;
+    cout << q1;
     return 0;
 }
