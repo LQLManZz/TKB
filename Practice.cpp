@@ -87,10 +87,40 @@ public:
     }
 };
 
+void nhapMang(float *a)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            cout << "Nhap A[" << i << "][" << j << "] = ";
+            cin >> *(a + 6 * i + j);
+        }
+        cout << endl;
+    }
+}
+
+void tinhTongMang(int n, int S, float *a)
+{
+    S = 0;
+    do
+    {
+        cout << "Nhap so n : ";
+        cin >> n;
+    } while (n <= 0 && n >= 4);
+    for (int i = 0; i < 6; i++)
+    {
+        S += *(a + 6 * n + i);
+    }
+    cout << "Tong la: " << S;
+}
+
 int main()
 {
-    testConstructorDestructor q1(3, 5);
-    cin >> q1;
-    cout << q1;
+    int n, S;
+    float *pA, A[5][6];
+    pA = (float *)A;
+    nhapMang(pA);
+    tinhTongMang(n, S, pA);
     return 0;
 }
