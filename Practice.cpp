@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <string>
 
@@ -117,10 +118,10 @@ void tinhTongMang(int n, int S, float *a)
 
 int main()
 {
-    int n, S;
-    float *pA, A[5][6];
-    pA = (float *)A;
-    nhapMang(pA);
-    tinhTongMang(n, S, pA);
+    // int n, S;
+    // float *pA, A[5][6];
+    // pA = (float *)A;
+    // nhapMang(pA);
+    // tinhTongMang(n, S, pA);
     return 0;
 }
