@@ -171,6 +171,11 @@ private:
     int w[17] = {1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 18, 20, 30, 40, 50, 70};
 
 public:
+    task1(const string &filename)
+    {
+        readFile(filename);
+    }
+
     // ham thuc hien task1
     void gatherForces()
     {
@@ -184,10 +189,10 @@ public:
 
 int main()
 {
+    string filename = "inputfile.txt";
     task0 t0;
-    t0.readFile("inputfile.txt");
-    task1 t1;
-    // t1.gatherForces();
-    t1.printInheritance();
+    t0.readFile(filename);
+    task1 t1(filename);
+    t1.gatherForces();
     return 0;
 }
