@@ -7,17 +7,17 @@ using namespace std;
 
 class task0
 {
-private:
+protected:
     int LF1[17], LF2[17], EXP1, EXP2, T1, T2, E;
+
+private:
     string data[MAX_LINES][MAX_LINE_LENGTH];
     string filename, line;
     string *pData;
 
 public:
-    task0(const string &filename) : filename(filename) {}
-
     // ham thuc hien task 0
-    bool readFile()
+    bool readFile(const string &filename)
     {
         fstream file(filename, ios::in);
 
@@ -65,15 +65,6 @@ public:
 
         // printArray(pData);
         // cout << endl;
-        // printArray(LF1);
-        // cout << endl;
-        // printArray(LF2);
-        // cout << endl;
-        // cout << EXP1 << endl;
-        // cout << EXP2 << endl;
-        // cout << T1 << endl;
-        // cout << T2 << endl;
-        // cout << E << endl;
 
         file.close();
 
@@ -157,17 +148,46 @@ public:
         C = stoi(*(pData + row * MAX_LINE_LENGTH));
         C = clamp(C, min, max);
     }
+
+    // check data da duoc dua vao cac bien chua
+    void printInheritance()
+    {
+        printArray(LF1);
+        cout << endl;
+        printArray(LF2);
+        cout << endl;
+        cout << EXP1 << endl;
+        cout << EXP2 << endl;
+        cout << T1 << endl;
+        cout << T2 << endl;
+        cout << E << endl;
+    }
 };
 
-class task1
+class task1 : public task0
 {
 private:
+    int sumPow = 0;
+    int w[17] = {1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 18, 20, 30, 40, 50, 70};
+
 public:
+    // ham thuc hien task1
+    void gatherForces()
+    {
+        for (int i = 0; i < MAX_LINE_LENGTH; i++)
+        {
+            sumPow += ((LF1[i] + LF2[i]) * w[i]);
+        }
+        cout << "Power level = " << sumPow << endl;
+    }
 };
 
 int main()
 {
-    task0 t1("inputfile.txt");
-    cout << t1.readFile();
+    task0 t0;
+    t0.readFile("inputfile.txt");
+    task1 t1;
+    // t1.gatherForces();
+    t1.printInheritance();
     return 0;
 }
