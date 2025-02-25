@@ -5,3 +5,4 @@
 #include <string>
 #include <sstream>
 #include <cctype>
+#include <algorithm>
