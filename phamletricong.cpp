@@ -1,9 +1,9 @@
 #include "headers/header.cpp"
 
+using namespace std;
+
 #define MAX_LINES 5
 #define MAX_LINE_LENGTH 17
-
-using namespace std;
 
 class task0
 {
@@ -200,6 +200,7 @@ private:
                                 "7", "National Route 14"};
     vector<int> IDfilter;
     string *pRT;
+    string (*pFunc)(const string);
 
 public:
     task2(const string &filename)
@@ -215,25 +216,40 @@ public:
         // check so phan tu cua mang ID, tu do dua ra ket qua
         int IDsize = IDfilter.size();
         pRT = (string *)rightTarget;
+        int ID = 0;
         switch (IDsize)
         {
         case 0:
             cout << "INVALID";
             break;
-        // case 1:
-        //     targetRef(IDfilter[0], pRT);
-        //     break;
-        // case 2:
-        //     int ID = (*max_element(IDfilter.begin(), IDfilter.end()) % 5) + 3;
-        //     targetRef(ID, pRT);
-        //     break;
-        // case 3:
-        //     int ID = (*max_element(IDfilter.begin(), IDfilter.end()) % 5) + 3;
-        //     targetRef(ID, pRT);
-        //     break;
+        case 1:
+            targetRef(IDfilter[0], pRT);
+            break;
+        case 2:
+            ID = ((IDfilter[0] + IDfilter[1]) % 5) + 3;
+            targetRef(ID, pRT);
+            break;
+        case 3:
+            ID = (*max_element(IDfilter.begin(), IDfilter.end()) % 5) + 3;
+            targetRef(ID, pRT);
+            break;
         default:
             cout << "INVALID";
             break;
+        }
+    }
+
+    // ham thuc hien task2.2
+    void decodeTarget(const string &message)
+    {
+        pRT = (string *)rightTarget;
+        if (EXP1 >= 300 && EXP2 >= 300)
+        {
+            cout << decodeMessage(message, caesarCipher, pRT) << endl;
+        }
+        else if (EXP1 < 300 || EXP2 < 300)
+        {
+            cout << decodeMessage(message, stringReverse, pRT) << endl;
         }
     }
 
@@ -244,7 +260,7 @@ public:
         {
             for (int i = 0; i < 5; i++)
             {
-                if (stoi(*(target + i * 2 + 1)) == ID)
+                if (stoi(*(target + i * 2)) == ID)
                 {
                     cout << *(target + i * 2 + 1) << endl;
                 }
@@ -263,15 +279,70 @@ public:
     {
         for (int i = 0; i < input.size(); i++)
         {
-            if (48 <= (int)input[i] && (int)input[i] <= 57)
+            if (isdigit(input[i]))
             {
                 vector.push_back((int)input[i] - 48);
             }
         }
     }
 
-    // ham thuc hien task2.2
-    void decodeTarget() {}
+    // giai ma va doi chieu voi muc tieu can danh chiem
+    string decodeMessage(const string &message, string (task2::*pFunc)(const string &), string *pRT)
+    {
+        string messageDecoded = (this->*pFunc)(message);
+        transform(messageDecoded.begin(), messageDecoded.end(), messageDecoded.begin(), ::tolower);
+        for (int i = 0; i < 5; i++)
+        {
+            string temp = *(pRT + i * 2 + 1);
+            transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+            if (messageDecoded == temp)
+            {
+                return *(pRT + i * 2 + 1);
+            }
+        }
+        return "INVALID";
+    }
+
+    // giai ma bang pp Caesar Cipher
+    string caesarCipher(const string &message)
+    {
+        int shift = (EXP1 + EXP2) % 26;
+        string messageDecoded = "";
+        for (int i = 0; i < message.size(); i++)
+        {
+            if (!isdigit(message[i]) && !isalpha(message[i]) && message[i] != ' ')
+            {
+                return "INVALID";
+            }
+            if (islower(message[i]))
+            {
+                messageDecoded += (message[i] - 'a' + shift) % 26 + 'a';
+                continue;
+            }
+            if (isupper(message[i]))
+            {
+                messageDecoded += (message[i] - 'A' + shift) % 26 + 'A';
+                continue;
+            }
+            if (isdigit(message[i]) || message[i] == ' ')
+            {
+                messageDecoded += message[i];
+                continue;
+            }
+        }
+        return messageDecoded;
+    }
+
+    // giai ma bang pp Dao Nguoc Chuoi
+    string stringReverse(const string &message)
+    {
+        string messageDecoded = "";
+        for (int i = message.size(); i >= 0; i--)
+        {
+            messageDecoded += message[i];
+        }
+        return messageDecoded;
+    }
 };
 
 int main()
@@ -288,6 +359,7 @@ int main()
 
     // exec task2
     task2 t2(filename);
-    t2.determineRightTarget("Kon3 Tum");
+    // t2.determineRightTarget("Kon4 Tum7");
+    t2.decodeTarget("Pal cUd");
     return 0;
 }
