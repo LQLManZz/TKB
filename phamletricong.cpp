@@ -187,12 +187,107 @@ public:
     }
 };
 
+class task2 : public task0
+{
+private:
+    string falseTarget[3][2] = {"0", "Kon Tum",
+                                "1", "Pleiku",
+                                "2", "Gia Lai"};
+    string rightTarget[5][2] = {"3", "Buon Ma Thuot",
+                                "4", "Duc Lap",
+                                "5", "Dak Lak",
+                                "6", "National Route 21",
+                                "7", "National Route 14"};
+    vector<int> IDfilter;
+    string *pRT;
+
+public:
+    task2(const string &filename)
+    {
+        readFile(filename);
+    }
+
+    // ham thuc hien task2.1
+    void determineRightTarget(const string &target)
+    {
+        checkLineNumber(target, IDfilter);
+
+        // check so phan tu cua mang ID, tu do dua ra ket qua
+        int IDsize = IDfilter.size();
+        pRT = (string *)rightTarget;
+        switch (IDsize)
+        {
+        case 0:
+            cout << "INVALID";
+            break;
+        // case 1:
+        //     targetRef(IDfilter[0], pRT);
+        //     break;
+        // case 2:
+        //     int ID = (*max_element(IDfilter.begin(), IDfilter.end()) % 5) + 3;
+        //     targetRef(ID, pRT);
+        //     break;
+        // case 3:
+        //     int ID = (*max_element(IDfilter.begin(), IDfilter.end()) % 5) + 3;
+        //     targetRef(ID, pRT);
+        //     break;
+        default:
+            cout << "INVALID";
+            break;
+        }
+    }
+
+    // doi chieu target
+    void targetRef(const int &ID, string *target)
+    {
+        if (3 <= ID && ID <= 7)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (stoi(*(target + i * 2 + 1)) == ID)
+                {
+                    cout << *(target + i * 2 + 1) << endl;
+                }
+            }
+        }
+        else if (0 <= ID && ID <= 3)
+        {
+            cout << "DECOY" << endl;
+        }
+        else
+            cout << "INVALID" << endl;
+    }
+
+    // check xem input co so khong
+    void checkLineNumber(const string &input, vector<int> &vector)
+    {
+        for (int i = 0; i < input.size(); i++)
+        {
+            if (48 <= (int)input[i] && (int)input[i] <= 57)
+            {
+                vector.push_back((int)input[i] - 48);
+            }
+        }
+    }
+
+    // ham thuc hien task2.2
+    void decodeTarget() {}
+};
+
 int main()
 {
     string filename = "inputfile.txt";
+
+    // exec task0
     task0 t0;
-    t0.readFile(filename);
+    // t0.readFile(filename);
+
+    // exec task1
     task1 t1(filename);
-    t1.gatherForces();
+    // t1.gatherForces();
+
+    // exec task2
+    task2 t2(filename);
+    t2.determineRightTarget("Kon3 Tum");
     return 0;
 }
