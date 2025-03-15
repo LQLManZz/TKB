@@ -348,7 +348,7 @@ public:
 class task3 : public task0
 {
 private:
-    float delT1, delT2;
+    float delT1 = 0, delT2 = 0;
 
 public:
     task3(const string &filename)
@@ -380,22 +380,23 @@ public:
             ifEis1029(delT1, delT2, sLF1, sLF2);
         else if (E >= 30 && E <= 59)
             ifEis3059(delT1, delT2, sLF1, sLF2);
+        cout << T1 << " " << T2 << endl;
     }
 
     // neu E = 0
     void ifEis0(float &delT1, float &delT2, const int &sLF1, const int &sLF2)
     {
-        delT1 = ((sLF1 / (sLF1 + sLF2)) * (T1 + T2)) * (1 + ((EXP1 - EXP2) / 100));
-        delT2 = (T1 + T2) - delT1;
-        T1 += delT1;
-        T2 += delT2;
+        delT1 = (((float)sLF1 / (sLF1 + sLF2)) * (T1 + T2)) * (1 + ((float)(EXP1 - EXP2) / 100));
+        delT2 = (float)(T1 + T2) - delT1;
+        T1 += round(delT1);
+        T2 += round(delT2);
     }
 
     // neu E thuoc [1,9]
     void ifEis19(float &delT1, float &delT2, const int &sLF1, const int &sLF2)
     {
-        T1 -= (E * 0.01) * T1;
-        T2 -= (E * 0.005) * T2;
+        T1 -= round((E * 0.01) * T1);
+        T2 -= round((E * 0.005) * T2);
     }
 
     // neu E thuoc [10,29]
@@ -408,8 +409,8 @@ public:
     // neu E thuoc [30,59]
     void ifEis3059(float &delT1, float &delT2, const int &sLF1, const int &sLF2)
     {
-        T1 += (E * 0.005) * T1;
-        T2 += (E * 0.002) * T2;
+        T1 += round((E * 0.005) * T1);
+        T2 += round((E * 0.002) * T2);
     }
 };
 
@@ -432,6 +433,6 @@ int main()
 
     // exec task3
     task3 t3(filename);
-    t3.manageLogistics();
+    // t3.manageLogistics();
     return 0;
 }
