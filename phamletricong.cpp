@@ -337,7 +337,7 @@ public:
     string stringReverse(const string &message)
     {
         string messageDecoded = "";
-        for (int i = message.size(); i >= 0; i--)
+        for (int i = message.size() - 1; i >= 0; i--)
         {
             messageDecoded += message[i];
         }
@@ -360,6 +360,6 @@ int main()
     // exec task2
     task2 t2(filename);
     // t2.determineRightTarget("Kon4 Tum7");
-    t2.decodeTarget("Pal cUd");
+    // t2.decodeTarget("Pal cUd");
     return 0;
 }
