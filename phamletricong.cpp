@@ -162,6 +162,17 @@ public:
         cout << T2 << endl;
         cout << E << endl;
     }
+
+    // tinh tong so quan trong moi quan doan LF
+    int sumLF(const int *pRT)
+    {
+        int S = 0;
+        for (int i = 0; i < MAX_LINE_LENGTH; i++)
+        {
+            S += *(pRT + i);
+        }
+        return S;
+    }
 };
 
 class task1 : public task0
@@ -356,17 +367,6 @@ public:
         readFile(filename);
     }
 
-    // tinh tong so quan trong moi quan doan LF
-    int sumLF(const int *pRT)
-    {
-        int S = 0;
-        for (int i = 0; i < MAX_LINE_LENGTH; i++)
-        {
-            S += *(pRT + i);
-        }
-        return S;
-    }
-
     // ham thuc hien task3
     void manageLogistics()
     {
@@ -414,6 +414,64 @@ public:
     }
 };
 
+class task4 : public task0
+{
+private:
+    int battleField[10][10] = {506, 15, 20, 25, 305, 635, 540, 145, 50, 55,
+                               325, 18, 24, 330, 36, 442, 48, 54, 660, 665,
+                               14, 21, 28, 35, 452, 49, 56, 63, 70, 77, 562,
+                               24, 323, 404, 484, 60, 40, 72, 80, 88, 181, 27,
+                               36, 52, 543, 63, 72, 81, 90, 99, 505, 30, 40,
+                               501, 602, 70, 80, 90, 100, 110, 922, 33, 442,
+                               55, 66, 77, 58, 99, 110, 121, 124, 36, 48, 60,
+                               72, 84, 96, 108, 120, 132, 264, 39, 525, 65,
+                               78, 91, 104, 170, 130, 143, 28, 42, 56, 50,
+                               84, 98, 125, 126, 140, 154};
+    float S = 0;
+    int *pRT;
+
+public:
+    task4(const string &filename)
+    {
+        readFile(filename);
+    }
+
+    // ham thuc hien task4
+    void planAttack()
+    {
+        S = (sumLF(LF1) + sumLF(LF2)) + (EXP1 + EXP2) * 5 + (T1 + T2) * 2;
+        pRT = (int *)battleField;
+        checkBattleField(pRT, S);
+        S = round(S);
+        cout << S << endl;
+    }
+
+    // duyet ma tran va cap nhat S tai moi vi tri
+    void checkBattleField(const int *pRT, float &S)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (i % 2 == 0)
+                    S -= (*(pRT + i * 10 + j) * 2 / 3);
+                else
+                    S -= (*(pRT + i * 10 + j) * 3 / 2);
+            }
+        }
+    }
+};
+
+class task5 : public task0
+{
+private:
+public:
+    task5(const string &filename)
+    {
+        readFile(filename);
+    }
+};
+
 int main()
 {
     string filename = "inputfile.txt";
@@ -434,5 +492,9 @@ int main()
     // exec task3
     task3 t3(filename);
     // t3.manageLogistics();
+
+    // exec task4
+    task4 t4(filename);
+    t4.planAttack();
     return 0;
 }
