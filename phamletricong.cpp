@@ -175,7 +175,7 @@ public:
     }
 };
 
-class task1 : public task0
+class task1 : virtual public task0
 {
 private:
     int sumPow = 0;
@@ -198,7 +198,7 @@ public:
     }
 };
 
-class task2 : public task0
+class task2 : virtual public task0
 {
 private:
     string falseTarget[3][2] = {"0", "Kon Tum",
@@ -356,7 +356,7 @@ public:
     }
 };
 
-class task3 : public task0
+class task3 : virtual public task0
 {
 private:
     float delT1 = 0, delT2 = 0;
@@ -414,7 +414,7 @@ public:
     }
 };
 
-class task4 : public task0
+class task4 : virtual public task0
 {
 private:
     int battleField[10][10];
@@ -422,6 +422,7 @@ private:
     int *pRT;
 
 public:
+    task4() {};
     task4(const string &filename)
     {
         readFile(filename);
@@ -432,41 +433,43 @@ public:
     {
         S = (sumLF(LF1) + sumLF(LF2)) + (EXP1 + EXP2) * 5 + (T1 + T2) * 2;
         pRT = (int *)battleField;
-        insertBattleField(pRT);
-        // showBattleField(pRT);
+        insertBattleField(pRT, 10, "battleField.txt");
+        // showBattleField(pRT, 10);
         checkBattleField(pRT, S);
         S = round(S);
         cout << S << endl;
     }
 
     // nhap ma tran
-    void insertBattleField(int *pRT)
+    void insertBattleField(int *pRT, const int &rowcol, const string &filename)
     {
-        fstream file("battleField.txt", ios::in);
+        fstream file(filename, ios::in);
         string line, num;
         int i = 0;
         stringstream ss(line);
-        while (getline(file, line) && i < 10)
+        while (getline(file, line) && i < rowcol)
         {
             int j = 0;
             stringstream s(line);
-            while (s >> num && j < 10)
+            while (s >> num && j < rowcol)
             {
-                *(pRT + i * 10 + j) = stoi(num);
+                *(pRT + i * rowcol + j) = stoi(num);
                 j++;
             }
             i++;
         }
+
+        file.close();
     }
 
     // xuat ma tran
-    void showBattleField(int *pRT)
+    void showBattleField(int *pRT, const int &rowcol)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < rowcol; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < rowcol; j++)
             {
-                cout << *(pRT + i * 10 + j) << " ";
+                cout << *(pRT + i * rowcol + j) << " ";
             }
             cout << endl;
         }
@@ -488,13 +491,43 @@ public:
     }
 };
 
-class task5 : public task0
+class task5 : virtual public task0, public task4
 {
 private:
+    int supply[5][5];
+    int *pRT;
+
 public:
     task5(const string &filename)
     {
         readFile(filename);
+    }
+
+    // sap xep file supply theo thu tu tang dan
+    void sortAscending(int *pRT)
+    {
+        for (int i = 0; i < 24; i++)
+        {
+            for (int j = i; j < 24; j++)
+            {
+                if (*(pRT + i) > *(pRT + j))
+                {
+                    int temp = *(pRT + i);
+                    *(pRT + i) = *(pRT + j);
+                    *(pRT + j) = temp;
+                }
+            }
+        }
+    }
+
+    // ham thuc hien task5
+    void resupply(const int &shortfall)
+    {
+        pRT = (int *)supply;
+        insertBattleField(pRT, 5, "supply.txt");
+        showBattleField(pRT, 5);
+        sortAscending(pRT);
+        showBattleField(pRT, 5);
     }
 };
 
@@ -522,5 +555,9 @@ int main()
     // exec task4
     task4 t4(filename);
     // t4.planAttack();
+
+    // exec task5
+    task5 t5(filename);
+    t5.resupply(1050);
     return 0;
 }
