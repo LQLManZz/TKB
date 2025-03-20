@@ -417,16 +417,7 @@ public:
 class task4 : public task0
 {
 private:
-    int battleField[10][10] = {506, 15, 20, 25, 305, 635, 540, 145, 50, 55,
-                               325, 18, 24, 330, 36, 442, 48, 54, 660, 665,
-                               14, 21, 28, 35, 452, 49, 56, 63, 70, 77, 562,
-                               24, 323, 404, 484, 60, 40, 72, 80, 88, 181, 27,
-                               36, 52, 543, 63, 72, 81, 90, 99, 505, 30, 40,
-                               501, 602, 70, 80, 90, 100, 110, 922, 33, 442,
-                               55, 66, 77, 58, 99, 110, 121, 124, 36, 48, 60,
-                               72, 84, 96, 108, 120, 132, 264, 39, 525, 65,
-                               78, 91, 104, 170, 130, 143, 28, 42, 56, 50,
-                               84, 98, 125, 126, 140, 154};
+    int battleField[10][10];
     float S = 0;
     int *pRT;
 
@@ -441,9 +432,44 @@ public:
     {
         S = (sumLF(LF1) + sumLF(LF2)) + (EXP1 + EXP2) * 5 + (T1 + T2) * 2;
         pRT = (int *)battleField;
+        insertBattleField(pRT);
+        // showBattleField(pRT);
         checkBattleField(pRT, S);
         S = round(S);
         cout << S << endl;
+    }
+
+    // nhap ma tran
+    void insertBattleField(int *pRT)
+    {
+        fstream file("battleField.txt", ios::in);
+        string line, num;
+        int i = 0;
+        stringstream ss(line);
+        while (getline(file, line) && i < 10)
+        {
+            int j = 0;
+            stringstream s(line);
+            while (s >> num && j < 10)
+            {
+                *(pRT + i * 10 + j) = stoi(num);
+                j++;
+            }
+            i++;
+        }
+    }
+
+    // xuat ma tran
+    void showBattleField(int *pRT)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                cout << *(pRT + i * 10 + j) << " ";
+            }
+            cout << endl;
+        }
     }
 
     // duyet ma tran va cap nhat S tai moi vi tri
@@ -495,6 +521,6 @@ int main()
 
     // exec task4
     task4 t4(filename);
-    t4.planAttack();
+    // t4.planAttack();
     return 0;
 }
