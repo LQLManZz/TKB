@@ -435,7 +435,7 @@ public:
     {
         S = (sumLF(LF1) + sumLF(LF2)) + (EXP1 + EXP2) * 5 + (T1 + T2) * 2;
         pRT = (int *)battleField;
-        insertBattleField(pRT, 10, "battleField.txt");
+        insertBattleField(pRT, 10, "BTL1_input/battleField.txt");
         // showBattleField(pRT, 10);
         checkBattleField(pRT, S);
         S = round(S);
@@ -562,7 +562,7 @@ public:
     void resupply(const int &shortfall)
     {
         pRT = (int *)supply;
-        insertBattleField(pRT, 5, "supply.txt");
+        insertBattleField(pRT, 5, "BTL1_input/supply.txt");
         // showBattleField(pRT, 5);
         sortAscending(pRT);
         pickSupply(pRT, shortfall);
@@ -572,7 +572,7 @@ public:
 
 int main()
 {
-    string filename = "inputfile.txt";
+    string filename = "BTL1_input/inputfile.txt";
 
     // exec task0
     task0 t0;
@@ -597,6 +597,6 @@ int main()
 
     // exec task5
     task5 t5(filename);
-    // t5.resupply(1050);
+    t5.resupply(1050);
     return 0;
 }
