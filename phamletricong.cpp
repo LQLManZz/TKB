@@ -108,12 +108,13 @@ public:
     }
 
     // in mang ra man hinh
-    void printArray(int *pLF)
+    void printArray(int *pLF, const int &size)
     {
-        for (int i = 0; i < MAX_LINE_LENGTH; i++)
+        for (int i = 0; i < size; i++)
         {
             cout << *(pLF + i) << " ";
         }
+        cout << endl;
     }
     void printArray(string *pData)
     {
@@ -125,6 +126,7 @@ public:
             }
             cout << endl;
         }
+        cout << endl;
     }
 
     // insert data vao cac bien
@@ -152,9 +154,9 @@ public:
     // check data da duoc dua vao cac bien chua
     void printInheritance()
     {
-        printArray(LF1);
+        printArray(LF1, MAX_LINE_LENGTH);
         cout << endl;
-        printArray(LF2);
+        printArray(LF2, MAX_LINE_LENGTH);
         cout << endl;
         cout << EXP1 << endl;
         cout << EXP2 << endl;
@@ -503,12 +505,12 @@ public:
         readFile(filename);
     }
 
-    // sap xep file supply theo thu tu tang dan
+    // sap xep theo thu tu tang dan
     void sortAscending(int *pRT)
     {
         for (int i = 0; i < 24; i++)
         {
-            for (int j = i; j < 24; j++)
+            for (int j = i; j < 25; j++)
             {
                 if (*(pRT + i) > *(pRT + j))
                 {
@@ -520,14 +522,51 @@ public:
         }
     }
 
+    // chon 5 o tiep te trong mang supply
+    void pickSupply(const int *pRT, const int &shortfall)
+    {
+        int pickedSup[5];
+        for (int i = 0; i < 5; i++)
+        {
+            pickedSup[i] = *(pRT + i);
+        }
+        int i = 4,
+            k = 25;
+        while (addEleArr(pickedSup) < shortfall && i >= 0)
+        {
+            int j = i + 1;
+            while (addEleArr(pickedSup) < shortfall && j < k)
+            {
+                pickedSup[i] = *(pRT + j);
+                j++;
+            }
+            i--;
+            k--;
+        }
+        printArray(pickedSup, 5);
+        cout << addEleArr(pickedSup) << endl;
+    }
+
+    // cong cac phan tu trong mang
+    int addEleArr(const int *pS)
+    {
+        int S = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            S += *(pS + i);
+        }
+        return S;
+    }
+
     // ham thuc hien task5
     void resupply(const int &shortfall)
     {
         pRT = (int *)supply;
         insertBattleField(pRT, 5, "supply.txt");
-        showBattleField(pRT, 5);
+        // showBattleField(pRT, 5);
         sortAscending(pRT);
-        showBattleField(pRT, 5);
+        pickSupply(pRT, shortfall);
+        // showBattleField(pRT, 5);
     }
 };
 
@@ -558,6 +597,6 @@ int main()
 
     // exec task5
     task5 t5(filename);
-    t5.resupply(1050);
+    // t5.resupply(1050);
     return 0;
 }
